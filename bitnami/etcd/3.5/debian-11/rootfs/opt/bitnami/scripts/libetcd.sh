@@ -365,7 +365,7 @@ etcd_configure_rbac() {
 was_etcd_member_removed() {
     local return_value=0
 
-    if grep -sqE "^Member[[:space:]]+[a-z0-9]+\s+removed\s+from\s+cluster\s+[a-z0-9]+$" "${ETCD_VOLUME_DIR}/member_removal.log"; then
+    if grep -sqE "^Member[[:space:]]+[a-z0-9]+\s+removed\s+from\s+cluster\s+[a-z0-9]+$" "${ETCD_DATA_DIR}/member_removal.log"; then
         debug "Removal was properly recorded in member_removal.log"
         rm -rf "${ETCD_DATA_DIR:?}/"*
     elif [[ ! -d "${ETCD_DATA_DIR}/member/snap" ]] && is_empty_value "$(get_member_id)"; then
@@ -374,7 +374,6 @@ was_etcd_member_removed() {
     else
         return_value=1
     fi
-    rm -f "${ETCD_VOLUME_DIR}/member_removal.log"
     return $return_value
 }
 
